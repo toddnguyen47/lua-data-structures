@@ -9,6 +9,7 @@
   Functions:
     append(itemToAppend)
     clear()
+    count(itemToFind)
     get(index)
     index(itemToFind)
     insert(index, itemToInsert)
@@ -40,6 +41,14 @@ end
 function List:clear()
   self._size = 0
   self._innerTable = {}
+end
+
+---@param itemToFind any Item to find
+---Count how often `itemToFind` appears in this list
+function List:count(itemToFind)
+  local count = 0
+  for _, v in ipairs(self._innerTable) do if v == itemToFind then count = count + 1 end end
+  return count
 end
 
 ---We will use 0th base index.

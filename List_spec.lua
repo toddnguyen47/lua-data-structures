@@ -174,4 +174,37 @@ insulate("List Unit Tests | ", function()
       assertIndexingAtIndex(#input - 1)
     end)
   end)
+
+  describe("count() | ", function()
+    local input = {8, 3, 4, 8, "hi", 3, 8, 20}
+
+    before_each(function()
+      list:clear()
+      for _, v in ipairs(input) do list:append(v) end
+    end)
+
+    test("Item not in list", function()
+      -- Arrange
+      -- Act
+      local countNumber = list:count("hello world2")
+      -- Assert
+      assert.is_equal(0, countNumber)
+    end)
+
+    test("Item appears once at the end", function()
+      -- Arrange
+      -- Act
+      local countNumber = list:count(20)
+      -- Assert
+      assert.is_equal(1, countNumber)
+    end)
+
+    test("Item appears 3 times", function()
+      -- Arrange
+      -- Act
+      local countNumber = list:count(8)
+      -- Assert
+      assert.is_equal(3, countNumber)
+    end)
+  end)
 end)
