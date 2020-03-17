@@ -12,6 +12,7 @@
     get(index)
     insert(index, itemToInsert)
     print()
+    remove(itemToRemove)
     size()
 ]] local List = {}
 List.__index = List
@@ -57,6 +58,19 @@ end
 
 function List:print()
   for k, v in ipairs(self._innerTable) do print("[" .. (k - 1) .. "] -> " .. v) end
+end
+
+---@param itemToRemove any Removing an item that matches `itemToRemove`, otherwise nil
+function List:remove(itemToRemove)
+  local itemRemoved = nil
+  for k, v in ipairs(self._innerTable) do
+    if v == itemToRemove then
+      itemRemoved = v
+      table.remove(self._innerTable, k)
+      self._size = self._size - 1
+    end
+  end
+  return itemRemoved
 end
 
 ---@return integer size The size of our current list

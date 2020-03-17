@@ -7,6 +7,11 @@ insulate("List Unit Tests", function()
     list:clear()
   end)
 
+  ---@return table inputTable
+  local getInputTableToTest = function()
+    return {5, 4, "adsf", 1, "hi"}
+  end
+
   randomize()
 
   test("Test Append to empty list", function()
@@ -21,10 +26,9 @@ insulate("List Unit Tests", function()
 
   test("Append 5 items to a list", function()
     -- Arrange
-    local inputs = {5, 4, "adsf", 1, "hi"}
+    local inputs = getInputTableToTest()
     -- Act
     for i = 1, #inputs do list:append(inputs[i]) end
-    list:print()
     -- Assert
     for i = 1, #inputs do assert.is_equal(inputs[i], list:get(i - 1)) end
     assert.is_equal(#inputs, list:size())
@@ -32,12 +36,11 @@ insulate("List Unit Tests", function()
 
   local assertInsertAtIndex = function(desiredIndex)
     -- Arrange
-    local inputs = {5, 4, "adsf", 1, "hi"}
+    local inputs = getInputTableToTest()
     for i = 1, #inputs do list:append(inputs[i]) end
     local newItem = "hello world"
     -- Act
     list:insert(desiredIndex, newItem)
-    list:print()
     -- Assert
     assert.is_equal(#inputs + 1, list:size())
     assert.is_equal(newItem, list:get(desiredIndex))
@@ -53,5 +56,41 @@ insulate("List Unit Tests", function()
 
   test("Insert at last element", function()
     assertInsertAtIndex(4)
+  end)
+
+  test("Removing a specified value", function()
+    -- Arrange
+    local input = getInputTableToTest()
+    for _, v in ipairs(input) do list:append(v) end
+    local itemToRemove = input[2]
+    -- Act
+    local itemRemoved = list:remove(itemToRemove)
+    -- Assert
+    assert.is_equal(#input - 1, list:size())
+    assert.is_equal(itemRemoved, itemToRemove)
+  end)
+
+  test("Removing a value that is not present", function()
+    -- Arrange
+    local input = getInputTableToTest()
+    for _, v in ipairs(input) do list:append(v) end
+    local itemToRemove = -1
+    -- Act
+    local itemRemoved = list:remove(itemToRemove)
+    -- Assert
+    assert.is_equal(#input, list:size())
+    assert.is_equal(itemRemoved, nil)
+  end)
+
+  test("Removing a value at 0th index", function()
+    -- Arrange
+    local input = getInputTableToTest()
+    for _, v in ipairs(input) do list:append(v) end
+    local itemToRemove = input[#input]
+    -- Act
+    local itemRemoved = list:remove(itemToRemove)
+    -- Assert
+    assert.is_equal(#input - 1, list:size())
+    assert.is_equal(itemRemoved, itemToRemove)
   end)
 end)
