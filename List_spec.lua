@@ -46,7 +46,7 @@ insulate("List Unit Tests | ", function()
     assert.is_equal(newItem, list:get(desiredIndex))
   end
 
-  test("Insert at index 3 (0th) in a 5 item table", function()
+  test("Insert at index 3 (0-based) in a 5 item table", function()
     assertInsertAtIndex(3)
   end)
 
@@ -94,40 +94,84 @@ insulate("List Unit Tests | ", function()
     assert.is_equal(itemRemoved, itemToRemove)
   end)
 
-  test("Popping an item out of index range", function()
-    -- Arrange
-    local input = getInputTableToTest()
-    for _, v in ipairs(input) do list:append(v) end
-    local desiredIndex = #input + 1
-    -- Act
-    local itemPopped = list:pop(desiredIndex)
-    -- Assert
-    assert.is_equal(#input, list:size())
-    assert.is_nil(itemPopped)
+  describe("pop() tests", function()
+    randomize()
+
+    test("Popping an item out of index range", function()
+      -- Arrange
+      local input = getInputTableToTest()
+      for _, v in ipairs(input) do list:append(v) end
+      local desiredIndex = #input + 1
+      -- Act
+      local itemPopped = list:pop(desiredIndex)
+      -- Assert
+      assert.is_equal(#input, list:size())
+      assert.is_nil(itemPopped)
+    end)
+
+    test("Popping with no parameter", function()
+      -- Arrange
+      local input = getInputTableToTest()
+      for _, v in ipairs(input) do list:append(v) end
+      -- Act
+      local itemPopped = list:pop()
+      -- Assert
+      assert.is_equal(#input - 1, list:size())
+      assert.is_equal(itemPopped, input[#input])
+      assert.is_equal(list:get(list:size() - 1), input[#input - 1])
+    end)
+
+    test("Popping a specified index", function()
+      -- Arrange
+      local input = getInputTableToTest()
+      for _, v in ipairs(input) do list:append(v) end
+      local desiredIndex = 2
+      -- Act
+      local itemPopped = list:pop(desiredIndex)
+      -- Assert
+      assert.is_equal(#input - 1, list:size())
+      assert.is_equal(itemPopped, input[desiredIndex + 1])
+      assert.is_equal(list:get(desiredIndex), input[desiredIndex + 2])
+    end)
   end)
 
-  test("Popping with no parameter", function()
-    -- Arrange
+  describe("Test 0-based index(itemToFind) | ", function()
     local input = getInputTableToTest()
-    for _, v in ipairs(input) do list:append(v) end
-    -- Act
-    local itemPopped = list:pop()
-    -- Assert
-    assert.is_equal(#input - 1, list:size())
-    assert.is_equal(itemPopped, input[#input])
-    assert.is_equal(list:get(list:size() - 1), input[#input - 1])
-  end)
 
-  test("Popping a specified index", function()
-    -- Arrange
-    local input = getInputTableToTest()
-    for _, v in ipairs(input) do list:append(v) end
-    local desiredIndex = 2
-    -- Act
-    local itemPopped = list:pop(desiredIndex)
-    -- Assert
-    assert.is_equal(#input - 1, list:size())
-    assert.is_equal(itemPopped, input[desiredIndex + 1])
-    assert.is_equal(list:get(desiredIndex), input[desiredIndex + 2])
+    ---@param expectedIndex integer Index to find
+    local function assertIndexingAtIndex(expectedIndex)
+      -- Arrange
+      local itemToFind = input[expectedIndex + 1]
+      -- Act
+      local actualIndex = list:index(itemToFind)
+      -- Assert
+      assert.is_equal(expectedIndex, actualIndex)
+      assert.is_equal(#input, list:size())
+    end
+
+    before_each(function()
+      list:clear()
+      for _, v in ipairs(input) do list:append(v) end
+    end)
+
+    test("Get [1] item, 0-based", function()
+      assertIndexingAtIndex(1)
+    end)
+
+    test("Get item that is NOT in the list", function()
+      -- Arrange
+      -- Act
+      local actualIndex = list:index("hello world2")
+      -- Assert
+      assert.is_nil(actualIndex)
+    end)
+
+    test("Get [0] item", function()
+      assertIndexingAtIndex(0)
+    end)
+
+    test("Get last item", function()
+      assertIndexingAtIndex(#input - 1)
+    end)
   end)
 end)

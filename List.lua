@@ -10,6 +10,7 @@
     append(itemToAppend)
     clear()
     get(index)
+    index(itemToFind)
     insert(index, itemToInsert)
     pop([index])
     print()
@@ -50,6 +51,20 @@ function List:get(index)
   return self._innerTable[newIndex]
 end
 
+---@param itemToFind any Item to find
+---@return integer index Index of `itemToFind`
+---Find the index of `itemToFind`, returning nil if `itemToFind` cannot be found
+function List:index(itemToFind)
+  local index = nil
+  for k, v in ipairs(self._innerTable) do
+    if v == itemToFind then
+      index = k - 1
+      break
+    end
+  end
+  return index
+end
+
 ---@param index integer The desired index, 0th base
 ---@param itemToInsert any Any item to insert at desired index
 ---Insert into the desired index.
@@ -86,6 +101,7 @@ function List:remove(itemToRemove)
       itemRemoved = v
       table.remove(self._innerTable, k)
       self._size = self._size - 1
+      break
     end
   end
   return itemRemoved
