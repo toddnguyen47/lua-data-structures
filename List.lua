@@ -11,6 +11,7 @@
     clear()
     get(index)
     insert(index, itemToInsert)
+    pop([index])
     print()
     remove(itemToRemove)
     size()
@@ -51,9 +52,26 @@ end
 
 ---@param index integer The desired index, 0th base
 ---@param itemToInsert any Any item to insert at desired index
+---Insert into the desired index.
 function List:insert(index, itemToInsert)
   self._size = self._size + 1
   table.insert(self._innerTable, index + 1, itemToInsert)
+end
+
+---From Python's documentation:
+---Remove the item at the given position in the list, and return it.
+---If no index is specified, a.pop() removes and returns the last item in the list.
+---(The square brackets around the i in the method signature denote that the
+---parameter is optional, not that you should type square brackets at that position.
+---@param index integer OPTIONAL: Index to pop the element at, 0th based.
+---@return integer item The item that was popped at `index`, or the last item in the list.
+---Pop an element at `index`, or the last element if no index is given
+function List:pop(index)
+  local indexToPop = self._size
+  if index ~= nil then indexToPop = index + 1 end
+  if indexToPop > self._size then return nil end
+  self._size = self._size - 1
+  return table.remove(self._innerTable, indexToPop)
 end
 
 function List:print()

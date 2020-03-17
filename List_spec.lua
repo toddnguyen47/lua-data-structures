@@ -1,6 +1,6 @@
 local List = require("List")
 
-insulate("List Unit Tests", function()
+insulate("List Unit Tests | ", function()
   local list = List:new()
 
   before_each(function()
@@ -92,5 +92,42 @@ insulate("List Unit Tests", function()
     -- Assert
     assert.is_equal(#input - 1, list:size())
     assert.is_equal(itemRemoved, itemToRemove)
+  end)
+
+  test("Popping an item out of index range", function()
+    -- Arrange
+    local input = getInputTableToTest()
+    for _, v in ipairs(input) do list:append(v) end
+    local desiredIndex = #input + 1
+    -- Act
+    local itemPopped = list:pop(desiredIndex)
+    -- Assert
+    assert.is_equal(#input, list:size())
+    assert.is_nil(itemPopped)
+  end)
+
+  test("Popping with no parameter", function()
+    -- Arrange
+    local input = getInputTableToTest()
+    for _, v in ipairs(input) do list:append(v) end
+    -- Act
+    local itemPopped = list:pop()
+    -- Assert
+    assert.is_equal(#input - 1, list:size())
+    assert.is_equal(itemPopped, input[#input])
+    assert.is_equal(list:get(list:size() - 1), input[#input - 1])
+  end)
+
+  test("Popping a specified index", function()
+    -- Arrange
+    local input = getInputTableToTest()
+    for _, v in ipairs(input) do list:append(v) end
+    local desiredIndex = 2
+    -- Act
+    local itemPopped = list:pop(desiredIndex)
+    -- Assert
+    assert.is_equal(#input - 1, list:size())
+    assert.is_equal(itemPopped, input[desiredIndex + 1])
+    assert.is_equal(list:get(desiredIndex), input[desiredIndex + 2])
   end)
 end)
