@@ -10,6 +10,8 @@
     append(itemToAppend)
     clear()
     get(index)
+    insert(index, itemToInsert)
+    print()
     size()
 ]] local List = {}
 List.__index = List
@@ -51,6 +53,10 @@ end
 function List:insert(index, itemToInsert)
   self._size = self._size + 1
   table.insert(self._innerTable, index + 1, itemToInsert)
+end
+
+function List:print()
+  for k, v in ipairs(self._innerTable) do print("[" .. (k - 1) .. "] -> " .. v) end
 end
 
 ---@return integer size The size of our current list

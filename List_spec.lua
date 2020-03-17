@@ -24,6 +24,7 @@ insulate("List Unit Tests", function()
     local inputs = {5, 4, "adsf", 1, "hi"}
     -- Act
     for i = 1, #inputs do list:append(inputs[i]) end
+    list:print()
     -- Assert
     for i = 1, #inputs do assert.is_equal(inputs[i], list:get(i - 1)) end
     assert.is_equal(#inputs, list:size())
@@ -36,6 +37,7 @@ insulate("List Unit Tests", function()
     local newItem = "hello world"
     -- Act
     list:insert(desiredIndex, newItem)
+    list:print()
     -- Assert
     assert.is_equal(#inputs + 1, list:size())
     assert.is_equal(newItem, list:get(desiredIndex))
