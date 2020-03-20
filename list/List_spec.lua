@@ -136,7 +136,7 @@ insulate("List Unit Tests | ", function()
   end)
 
   describe("Test 0-based index(itemToFind) | ", function()
-    local input = getInputTableToTest()
+    local input = {8, 3, 4, 8, "hi", 3, 8, 20}
 
     ---@param expectedIndex integer Index to find
     local function assertIndexingAtIndex(expectedIndex)
@@ -173,6 +173,15 @@ insulate("List Unit Tests | ", function()
     test("Get last item", function()
       assertIndexingAtIndex(#input - 1)
     end)
+
+    test("If item appears more than once, return the first index found", function()
+      -- Arrange
+      -- Act
+      -- Assert
+      assert.is_equal(0, list:index(8))
+      assert.is_equal(1, list:index(3))
+      assert.is_equal(4, list:index("hi"))
+    end)
   end)
 
   describe("count() | ", function()
@@ -205,6 +214,47 @@ insulate("List Unit Tests | ", function()
       local countNumber = list:count(8)
       -- Assert
       assert.is_equal(3, countNumber)
+    end)
+  end)
+
+  describe("find() tests | ", function()
+    local input = {8, 3, 4, 8, "hi", 3, 8, 20}
+
+    before_each(function()
+      list:clear()
+      for _, v in ipairs(input) do list:append(v) end
+    end)
+
+    test("If not in list", function()
+      -- Arrange
+      local noElem = 1000
+      -- Act
+      -- Assert
+      assert.is_false(list:find(noElem))
+    end)
+
+    test("If in list once", function()
+      -- Arrange
+      local elem = "hi"
+      -- Act
+      -- Assert
+      assert.is_true(list:find(elem))
+    end)
+
+    test("If item is in list more than once, return true anyway", function()
+      -- Arrange
+      local elem = "hi"
+      -- Act
+      -- Assert
+      assert.is_true(list:find(elem))
+    end)
+
+    test("If item is in list 3x, return true anyway", function()
+      -- Arrange
+      local elem = 8
+      -- Act
+      -- Assert
+      assert.is_true(list:find(elem))
     end)
   end)
 end)

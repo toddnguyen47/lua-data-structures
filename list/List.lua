@@ -10,6 +10,7 @@
     append(itemToAppend)
     clear()
     count(itemToFind)
+    find(itemToFind)
     get(index)
     index(itemToFind)
     insert(index, itemToInsert)
@@ -52,9 +53,16 @@ function List:count(itemToFind)
   return count
 end
 
+---@param itemToFind any An item to find.
+---@return boolean isFound
+---Return true if `itemToFind` is in the list, false otherwise
+function List:find(itemToFind)
+  return self:index(itemToFind) ~= nil
+end
+
 ---We will use 0th base index.
 ---@param index integer The index to get
----@return any item Item to get at index `index`
+---@return any item Item to get at index `index`, Nil if not found
 function List:get(index)
   local newIndex = index + 1
   if (newIndex > self._size) then return nil end
