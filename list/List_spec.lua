@@ -257,4 +257,44 @@ insulate("List Unit Tests | ", function()
       assert.is_true(list:find(elem))
     end)
   end)
+
+  describe("iterator() example | ", function()
+    local input = {8, 3, 4, 8, "hi", 3, 8, 20}
+
+    test("Iterate an empty list", function()
+      -- Arrange
+      local count = 0
+      -- Act
+      for elem in list:iterator() do count = count + 1 end
+      -- Assert
+      assert.is_equal(0, count)
+    end)
+
+    test("Iterate list of one", function()
+      -- Arrange
+      local count = 0
+      local smallInput = {5}
+      for _, val in ipairs(smallInput) do list:append(val) end
+      -- Act
+      for elem in list:iterator() do
+        assert.is_equal(smallInput[count + 1], elem)
+        count = count + 1
+      end
+      -- Assert
+      assert.is_equal(#smallInput, count)
+    end)
+
+    test("Iterate list of many elements", function()
+      -- Arrange
+      local count = 0
+      for _, val in ipairs(input) do list:append(val) end
+      -- Act
+      for elem in list:iterator() do
+        assert.is_equal(input[count + 1], elem)
+        count = count + 1
+      end
+      -- Assert
+      assert.is_equal(#input, count)
+    end)
+  end)
 end)

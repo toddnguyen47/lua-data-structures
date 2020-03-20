@@ -14,6 +14,7 @@
     get(index)
     index(itemToFind)
     insert(index, itemToInsert)
+    iterator()
     pop([index])
     print()
     remove(itemToRemove)
@@ -89,6 +90,34 @@ end
 function List:insert(index, itemToInsert)
   self._size = self._size + 1
   table.insert(self._innerTable, index + 1, itemToInsert)
+end
+
+---Example usage:
+---```
+---list = List:new()
+---list:append(5)
+---list:append(2)
+---list:append(6)
+---for elem in list:iter() do
+---  print(elem)
+---end
+--- -- Output: "5 2 6" separated by newline instead of spaces.
+---```
+---NOTE: Do NOT insert/append/remove elements during iteration! This might cause an error for the iteration.
+---@return any iterator An iterator that iterates through all elements of this list.
+---Returns an iterator that iterates through all elements of this list.
+function List:iterator()
+  -- Ref: https://www.lua.org/pil/7.1.html
+  local i = 1
+  local n = self._size
+
+  return function()
+    if i <= n then
+      local val = self._innerTable[i]
+      i = i + 1
+      return val
+    end
+  end
 end
 
 ---From Python's documentation:
