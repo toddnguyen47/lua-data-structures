@@ -58,11 +58,11 @@ insulate("HashSet Test | ", function()
 
   test("Add 5 elements then return an iterator", function()
     local expectedSet = {
-      elem1 = "elem1",
-      elem2 = "elem2",
       elem3 = "elem3",
+      elem1 = "elem1",
       elem4 = "elem4",
-      elem5 = "elem5"
+      elem5 = "elem5",
+      elem2 = "elem2",
     }
 
     for key, _ in pairs(expectedSet) do hashSet:add(key) end
