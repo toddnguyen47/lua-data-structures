@@ -98,7 +98,7 @@ end
 ---list:append(5)
 ---list:append(2)
 ---list:append(6)
----for elem in list:iter() do
+---for elem in list:iterator() do
 ---  print(elem)
 ---end
 --- -- Output: "5 2 6" separated by newline instead of spaces.
