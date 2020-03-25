@@ -16,7 +16,7 @@ return function(options)
   local busted = require 'busted'
   local handler = require 'busted.outputHandlers.base'()
 
-  local successDot = options.arguments[1] or '‗'
+  local successDot = options.arguments[1] or '♢'
   local failureDot = options.arguments[2] or '✕'
   local errorDot = options.arguments[3] or '✮'
   local pendingDot = options.arguments[4] or '.'
