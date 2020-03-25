@@ -1,0 +1,9 @@
+-- Ref: https://olivinelabs.com/busted/#overview
+return {
+  _all = {
+    output = "../plainTerminalOutputPlusPlus.lua",
+    Xoutput = "",
+    keepGoing = true
+  }
+}
+

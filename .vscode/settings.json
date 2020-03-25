@@ -1,0 +1,4 @@
+{
+  "vscode-lua-format.binaryPath": "/opt/LuaFormatter/bin/lua-format",
+  "vscode-lua-format.configPath": "/opt/LuaFormatter/config.luaformatter"
+}
