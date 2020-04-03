@@ -3,8 +3,8 @@
             from Sean Conner */
 #include <stddef.h>
 #include <ctype.h>
-#include <lua.h>
-#include <lauxlib.h>
+
+#include "trim.h"
 
 int trim(lua_State *L)
 {

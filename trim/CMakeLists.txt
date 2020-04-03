@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 
-INCLUDE_DIRECTORIES("/opt/lua-5.3.5/include")
-
 set(CMAKE_C_STANDARD 11)
 
 project(LuaTrim
@@ -11,3 +9,7 @@ project(LuaTrim
 
 add_library(trim SHARED
   trim.c)
+
+target_include_directories(trim PRIVATE "/opt/lua-5.3.5/include")
+
+set_target_properties(trim PROPERTIES PREFIX "")
