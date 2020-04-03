@@ -9,5 +9,5 @@ project(LuaTrim
   DESCRIPTION "Terminal Clock Display"
 )
 
-add_library(Trim SHARED
+add_library(trim SHARED
   trim.c)
