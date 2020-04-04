@@ -4,7 +4,7 @@ set(CMAKE_C_STANDARD 11)
 
 project(LuaTrim
   VERSION 1.0
-  DESCRIPTION "Terminal Clock Display"
+  DESCRIPTION "C String Functions globally"
 )
 
 add_library(trim SHARED

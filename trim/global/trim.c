@@ -3,9 +3,12 @@
             from Sean Conner */
 #include <stddef.h>
 #include <ctype.h>
+#include <lua.h>
+#include <lauxlib.h>
 
-#include "trim.h"
-
+/**
+ * Trim a string of any whitespace that appears before and after the string.
+ */
 int trim(lua_State *L)
 {
   const char *front;
@@ -31,6 +34,11 @@ int trim(lua_State *L)
   return 1;
 }
 
+/** 
+ * The name of this function MUST be fixed
+ * This is how Lua looks for the luaL_newlib(), i.e.
+ * Lua looks for the string after `luaopen_`
+ */
 int luaopen_trim(lua_State *L)
 {
   lua_register(L, "trim", trim);
