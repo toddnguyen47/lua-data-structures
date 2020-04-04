@@ -6,3 +6,7 @@ Various data structures written in Lua.
 
 - [HashSet based on Java's HashSet](hashset/)
 - [Lists based on Python's List](list/)
+
+# C Libraries to be used in Lua
+
+- [Trim](trim/)
