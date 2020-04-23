@@ -16,8 +16,11 @@ local function eq_expected(state, arguments, level)
   return result
 end
 
-say:set("assertion.eq_expected.positive", "\nExpected: \n%s \nto be equal to (Actual): \n%s")
-say:set("assertion.eq_expected.negative", "\nExpected: \n%s \nto NOT be equal to (Actual):\n%s")
+local positive = "\nExpected: \n%s \nto be equal to (Actual): \n%s"
+local negative = "\nExpected: \n%s \nto NOT be equal to (Actual):\n%s"
+
+say:set("assertion.eq_expected.positive", positive)
+say:set("assertion.eq_expected.negative", negative)
 
 -- Ref: https://github.com/Olivine-Labs/luassert/blob/master/src/assert.lua#L87
 assert:register("assertion", "eq_expected", eq_expected, "assertion.eq_expected.positive",

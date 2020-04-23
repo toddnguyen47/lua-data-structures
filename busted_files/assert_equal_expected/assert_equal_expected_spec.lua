@@ -9,7 +9,7 @@ insulate("", function()
 
   test("Expected to NOT be equal", function()
     local expected = 1
-    local actual = 1
+    local actual = 2
     assert.is_not_eq_expected(expected, actual)
   end)
 end)
