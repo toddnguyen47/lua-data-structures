@@ -1,6 +1,5 @@
 {
   "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools",
-  "files.associations": {
-    "chrono": "cpp"
-  }
+  "vscode-lua-format.binaryPath": "/opt/LuaFormatter/bin/lua-format",
+  "vscode-lua-format.configPath": "/opt/LuaFormatter/config.luaformatter"
 }

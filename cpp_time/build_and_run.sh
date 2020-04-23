@@ -1,5 +1,7 @@
 #!/bin/bash
 
+GENERATOR="Ninja"
+
 print_help() {
   printf "%s\n" "Compile and build cmake project."
   printf "\n"
@@ -30,5 +32,5 @@ done
 
 mkdir -p build
 cd build
-cmake ../
+cmake -G "${GENERATOR}" ../
 cmake --build .

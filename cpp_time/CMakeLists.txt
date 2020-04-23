@@ -8,7 +8,7 @@ project(cpp_time_proj
 )
 
 add_library(cpp_time SHARED
-  cpp_time.cpp)
+  cpp_time.cpp expose_to_lua.cpp)
 
 target_include_directories(cpp_time PRIVATE "/opt/lua-5.3.5/include")
 

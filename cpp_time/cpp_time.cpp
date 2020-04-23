@@ -1,14 +1,6 @@
-/* Ref: http://lua-users.org/wiki/StringTrim */
-/* Ref for luaL_newlib: https://chsasank.github.io/lua-c-wrapping.html */
-/* trim.c - based on http://lua-users.org/lists/lua-l/2009-12/msg00951.html
-            from Sean Conner */
-#include <lua.hpp>
-#include <iostream>
-#include <chrono>
+#include "cpp_time.h"
 
-using namespace std;
-
-int get_hello_world(lua_State *L)
+int CppTime::get_hello_world(lua_State *L)
 {
   std::string cur_string = "hello world";
   lua_pushlstring(L, cur_string.c_str(), cur_string.size());
@@ -16,7 +8,7 @@ int get_hello_world(lua_State *L)
   return number_of_results;
 }
 
-int get_current_time_ms(lua_State *L)
+int CppTime::get_current_time_ms(lua_State *L)
 {
   auto ms = chrono::duration_cast<chrono::milliseconds>(
                 chrono::system_clock::now().time_since_epoch())
@@ -26,7 +18,7 @@ int get_current_time_ms(lua_State *L)
   return number_of_results;
 }
 
-int get_current_time_object(lua_State *L)
+int CppTime::get_current_time_object(lua_State *L)
 {
   // Ref: https://www.lua.org/pil/28.1.html
   chrono::steady_clock::time_point *stack_space = static_cast<chrono::steady_clock::time_point *>(
@@ -37,7 +29,7 @@ int get_current_time_object(lua_State *L)
   return number_of_results;
 }
 
-int convert_to_ms_since_epoch(lua_State *L)
+int CppTime::convert_to_ms_since_epoch(lua_State *L)
 {
   int number_of_args = lua_gettop(L);
   if (number_of_args != 1)
@@ -56,7 +48,7 @@ int convert_to_ms_since_epoch(lua_State *L)
   return number_of_results;
 }
 
-int difftime(lua_State *L)
+int CppTime::difftime(lua_State *L)
 {
   int number_of_args = lua_gettop(L);
   if (number_of_args != 2)
@@ -74,24 +66,4 @@ int difftime(lua_State *L)
   lua_pushinteger(L, time_diff_milliseconds);
   int number_of_results = 1;
   return number_of_results;
-}
-
-const struct luaL_Reg cpp_time[] = {
-    {"get_hello_world", get_hello_world},
-    {"get_current_time_ms", get_current_time_ms},
-    {"get_current_time_object", get_current_time_object},
-    {"convert_to_ms_since_epoch", convert_to_ms_since_epoch},
-    {"difftime", difftime},
-    {NULL, NULL} // Sentinel
-};
-
-/** 
- * The name of this function MUST be fixed
- * This is how Lua looks for the luaL_newlib(), i.e.
- * Lua looks for the string after `luaopen_`
- */
-extern "C" int luaopen_cpp_time(lua_State *L)
-{
-  luaL_newlib(L, cpp_time);
-  return 1;
 }
