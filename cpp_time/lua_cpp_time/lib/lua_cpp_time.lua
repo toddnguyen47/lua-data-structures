@@ -1,3 +1,12 @@
+-- Ref: https://stackoverflow.com/a/23535333
+local function script_path()
+  local str = debug.getinfo(2, "S").source:sub(2)
+  return str:match("(.*/)") or "./"
+end
+
+local path = script_path()
+
+package.cpath = package.cpath .. string.format(";%s?.so", path)
 local cpp_time = require("cpp_time")
 
 local LuaCppTime = {}

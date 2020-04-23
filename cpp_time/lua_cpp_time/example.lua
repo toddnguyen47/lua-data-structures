@@ -1,3 +1,12 @@
+-- Ref: https://stackoverflow.com/a/23535333
+local function script_path()
+  local str = debug.getinfo(2, "S").source:sub(2)
+  return str:match("(.*/)") or "./"
+end
+
+local path = script_path()
+
+package.path = package.path .. string.format(";%slib/?.lua", path)
 local LuaCppTime = require("lua_cpp_time")
 
 local execute_timed_command
