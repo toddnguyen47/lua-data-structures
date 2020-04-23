@@ -23,8 +23,11 @@ local function substring(state, arguments, level)
   return string.find(str, substr) ~= nil
 end
 
-say:set("assertion.substring.positive", "\nExpected: \n%s \nto have a substring of\n%s")
-say:set("assertion.substring.negative", "\nExpected: \n%s \nto NOT have a substring of\n%s")
+local positive = "\nExpected: \n%s \nto have a substring of\n%s"
+local negative = "\nExpected: \n%s \nto NOT have a substring of\n%s"
+
+say:set("assertion.substring.positive", positive)
+say:set("assertion.substring.negative", negative)
 
 -- Ref: https://github.com/Olivine-Labs/luassert/blob/master/src/assert.lua#L87
 assert:register("assertion", "substring", substring, "assertion.substring.positive",
