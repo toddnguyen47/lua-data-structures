@@ -19,8 +19,6 @@ function LuaCppTime:new()
 end
 
 function LuaCppTime:__init__()
-  self.SECONDS = 0
-  self.MILLISECONDS = 1
 end
 
 ---Get a `chrono::steady_clock::time_point` object that can either 
