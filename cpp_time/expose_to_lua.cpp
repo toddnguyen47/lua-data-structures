@@ -22,9 +22,24 @@ int convert_to_ms_since_epoch(lua_State *L)
   return cpp_time_obj.convert_to_ms_since_epoch(L);
 }
 
-int difftime(lua_State *L)
+int difftime_object(lua_State *L)
 {
-  return cpp_time_obj.difftime(L);
+  return cpp_time_obj.difftime_object(L);
+}
+
+int get_duration_count(lua_State *L)
+{
+  return cpp_time_obj.get_duration_count(L);
+}
+
+int sleep_milliseconds(lua_State *L)
+{
+  return cpp_time_obj.sleep_milliseconds(L);
+}
+
+int sleep_seconds(lua_State *L)
+{
+  return cpp_time_obj.sleep_seconds(L);
 }
 
 const struct luaL_Reg cpp_time[] = {
@@ -32,7 +47,10 @@ const struct luaL_Reg cpp_time[] = {
     {"get_current_time_ms", get_current_time_ms},
     {"get_current_time_object", get_current_time_object},
     {"convert_to_ms_since_epoch", convert_to_ms_since_epoch},
-    {"difftime", difftime},
+    {"difftime_object", difftime_object},
+    {"get_duration_count", get_duration_count},
+    {"sleep_milliseconds", sleep_milliseconds},
+    {"sleep_seconds", sleep_seconds},
     {NULL, NULL} // Sentinel
 };
 
