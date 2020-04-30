@@ -3,6 +3,7 @@ local say = require("say")
 -- Ref: https://stackoverflow.com/a/46358534
 local assert = require("luassert")
 
+---@param list table
 local function make_set(list)
   local set = {}
   for _, l in ipairs(list) do set[l] = true end
@@ -13,7 +14,7 @@ end
 ---@return string
 local function escape_magic_characters(str_input)
   -- Ref for magic chars: https://www.lua.org/manual/5.3/manual.html#6.4.1
-  local magic_chars = make_set {"^", "$", "(", ")", "%", ".", "[", "]", "*", "+", "-", "?"}
+  local magic_chars = make_set({"^", "$", "(", ")", "%", ".", "[", "]", "*", "+", "-", "?"})
   local new_str = ""
   str_input:gsub(".", function(char)
     if magic_chars[char] then new_str = new_str .. "%" end
