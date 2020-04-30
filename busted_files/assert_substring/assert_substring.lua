@@ -3,6 +3,25 @@ local say = require("say")
 -- Ref: https://stackoverflow.com/a/46358534
 local assert = require("luassert")
 
+local function make_set(list)
+  local set = {}
+  for _, l in ipairs(list) do set[l] = true end
+  return set
+end
+
+---@param str_input string
+---@return string
+local function escape_magic_characters(str_input)
+  -- Ref for magic chars: https://www.lua.org/manual/5.3/manual.html#6.4.1
+  local magic_chars = make_set {"^", "$", "(", ")", "%", ".", "[", "]", "*", "+", "-", "?"}
+  local new_str = ""
+  str_input:gsub(".", function(char)
+    if magic_chars[char] then new_str = new_str .. "%" end
+    new_str = new_str .. char
+  end)
+  return new_str
+end
+
 ---Example usage:
 ---assert.is_substring("LeBlanc is my favorite League champion", "LeBlanc") # will pass
 ---assert.is_substring("LeBlanc is my favorite League champion", "Kassadin") # will FAIL
@@ -19,6 +38,7 @@ local function substring(state, arguments, level)
 
   local str = arguments[1]
   local substr = arguments[2]
+  substr = escape_magic_characters(substr)
 
   return string.find(str, substr) ~= nil
 end

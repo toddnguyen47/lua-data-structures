@@ -3,6 +3,25 @@ local say = require("say")
 -- Ref: https://stackoverflow.com/a/46358534
 local assert = require("luassert")
 
+local function make_set(list)
+  local set = {}
+  for _, l in ipairs(list) do set[l] = true end
+  return set
+end
+
+---@param str_input string
+---@return string
+local function escape_magic_characters(str_input)
+  -- Ref for magic chars: https://www.lua.org/manual/5.3/manual.html#6.4.1
+  local magic_chars = make_set {"^", "$", "(", ")", "%", ".", "[", "]", "*", "+", "-", "?"}
+  local new_str = ""
+  str_input:gsub(".", function(char)
+    if magic_chars[char] then new_str = new_str .. "%" end
+    new_str = new_str .. char
+  end)
+  return new_str
+end
+
 ---Ref: https://github.com/Olivine-Labs/luassert/blob/master/src/assertions.lua#L112
 ---arguments[1] = table
 ---arguments[2] = substring of key
@@ -17,6 +36,7 @@ local function has_substring_key(state, arguments, level)
   local substr_key = arguments[2]
 
   assert(type(table1) == "table", "Need to supply a table.")
+  substr_key = escape_magic_characters(substr_key)
 
   local result = false
   for k, _ in pairs(table1) do

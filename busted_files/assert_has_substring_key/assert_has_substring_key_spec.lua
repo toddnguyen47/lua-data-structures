@@ -45,4 +45,11 @@ insulate("", function()
     local key = "hi"
     assert.not_has_substring_key(table1, key)
   end)
+
+  test("test finding parentheses", function()
+    local table1 = {}
+    table1["(TEST)"] = 5
+    local key = "(TEST)"
+    assert.has_substring_key(table1, key)
+  end)
 end)
