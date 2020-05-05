@@ -22,8 +22,8 @@ local function greater(state, arguments, level)
   assert(type(larger_number) == "number", get_is_not_number_str(larger_number))
   assert(type(smaller_number) == "number", get_is_not_number_str(smaller_number))
 
-  larger_number = tonumber(larger_number)
-  smaller_number = tonumber(smaller_number)
+  larger_number = larger_number
+  smaller_number = smaller_number
 
   local result = larger_number > smaller_number
   return result
