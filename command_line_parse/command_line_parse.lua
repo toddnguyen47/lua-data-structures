@@ -29,13 +29,9 @@ function CommandLineParse:parse(cmd_line_args)
       if is_boolean_option then
         self.boolean_flags_[flag] = true
       elseif is_nonboolean_option then
-        local flag_key = flag:match("(.*)=")
-        local flag_value = flag:match("=(.*)")
-        if self.number_flags_[flag_key] then flag_value = tonumber(flag_value) end
-        self.nonboolean_flags_[flag_key] = flag_value
+        self:_set_nonboolean_value(flag)
       else
-        print(string.format("\'%s\' is not a valid flag", flag))
-        os.exit(1)
+        self:_exit_on_incorrect_flag(flag)
       end
     end
   end
@@ -70,6 +66,21 @@ function CommandLineParse:_is_valid_nonboolean_flag(flag)
     for k, _ in pairs(self.nonboolean_flags_) do if k == flag then return true end end
   end
   return false
+end
+
+---@param flag string
+function CommandLineParse:_set_nonboolean_value(flag)
+  local flag_key = flag:match("(.*)=")
+  local flag_value = flag:match("=(.*)")
+  if self.number_flags_[flag_key] then flag_value = tonumber(flag_value) end
+  self.nonboolean_flags_[flag_key] = flag_value
+end
+
+---@param flag string
+function CommandLineParse:_exit_on_incorrect_flag(flag)
+  local flag_matched = flag:match("(.*)=") or flag
+  print(string.format("\'%s\' is not a valid flag", flag_matched))
+  os.exit(1)
 end
 
 return CommandLineParse
