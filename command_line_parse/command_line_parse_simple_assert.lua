@@ -22,22 +22,39 @@ local function testSimpleCommandLineParse()
   assert.is_eq_expected(cmd_line_args[2], command_line_parse:get_arg(2))
 end
 
-local function testSimpleFlag()
+local function testExitOnFailure()
   command_line_parse:parse(cmd_line_args)
-  assert.is_eq_expected("--exit-on-failure", command_line_parse:get_arg(1))
-  assert.is_true(command_line_parse.flag_options_["--exit-on-failure"])
+  local flag = "--exit-on-failure"
+  assert.is_eq_expected(flag, command_line_parse:get_arg(1))
+  assert.is_true(command_line_parse.boolean_flags_[flag])
 end
 
 local function noArguments()
   command_line_parse:parse(cmd_line_args)
   assert.is_nil(command_line_parse:get_arg(1))
-  assert.is_false(command_line_parse.flag_options_["--exit-on-failure"])
+  assert.is_false(command_line_parse.boolean_flags_["--exit-on-failure"])
+end
+
+local function testNumIterationsFlag()
+  command_line_parse:parse(cmd_line_args)
+  local flag = "--num-iterations"
+  local flag_escaped = flag:gsub("%-", "%%-")
+  assert.is_not_nil(command_line_parse:get_arg(1):find(flag_escaped))
+  assert.is_eq_expected(5, command_line_parse.nonboolean_flags_[flag])
+end
+
+local function testNumIterationsAndExitOnFailureFlags()
+  command_line_parse:parse(cmd_line_args)
+  assert.is_eq_expected(5, command_line_parse.nonboolean_flags_["--num-iterations"])
+  assert.is_true(command_line_parse.boolean_flags_["--exit-on-failure"])
 end
 
 local function mainExecute()
+  -- noArguments()
   -- testSimpleCommandLineParse()
-  -- testSimpleFlag()
-  noArguments()
+  testExitOnFailure()
+  -- testNumIterationsFlag()
+  -- testNumIterationsAndExitOnFailureFlags()
 end
 
 mainExecute()
