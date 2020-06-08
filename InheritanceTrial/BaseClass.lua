@@ -6,9 +6,9 @@ BaseClass.__index = BaseClass
 -- e.g. return BaseClass
 
 function BaseClass:new(val)
-  local o = setmetatable({}, self)
-  o.value = val
-  return o
+  local newInstance = setmetatable({}, self)
+  newInstance.value = val
+  return newInstance
 end
 
 -- setmetatable(BaseClass, {
