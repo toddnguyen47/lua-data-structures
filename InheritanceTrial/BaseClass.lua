@@ -5,30 +5,19 @@ BaseClass.__index = BaseClass
 -- Make sure there is a return statement at the end of this file!
 -- e.g. return BaseClass
 
-function BaseClass:new(val)
+function BaseClass:new(value)
   local newInstance = setmetatable({}, self)
-  newInstance.value = val
+  newInstance.value = value
   return newInstance
 end
 
--- setmetatable(BaseClass, {
---  __call = function (cls, ...)
---    local self = setmetatable({}, cls)
---    self:_init(...)
---    return self
---  end,
--- })
---
--- function BaseClass:_init(init)
---  self.value = init
--- end
-
-function BaseClass:set_value(newval)
+function BaseClass:setValue(newval)
+  print("In BaseClass")
   print("Setting `value` to: " .. newval)
   self.value = newval
 end
 
-function BaseClass:get_value()
+function BaseClass:getValue()
   return self.value
 end
 
