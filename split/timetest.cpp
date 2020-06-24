@@ -39,6 +39,11 @@ int main(int argc, char **argv)
         << duration2;
     std::cout << " milliseconds" << std::endl;
 
-    std::cout << "Delta Time: " << duration2 - duration1 << " milliseconds" << std::endl;
+    std::cout
+        << std::endl
+        << "Delta Time: "
+        << duration2 - duration1
+        << " milliseconds"
+        << std::endl;
   }
 }
