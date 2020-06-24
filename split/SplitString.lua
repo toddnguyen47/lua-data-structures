@@ -11,7 +11,9 @@ function SplitString:split(strInput, delimiter)
   local t1 = {}
   local startIndex = 1
   local endIndex = 0
+  local strCount = 0
   for char1 in strInput:gmatch(".") do
+    strCount = strCount + 1
     if char1 == delimiter then
       local s1 = string.sub(strInput, startIndex, endIndex)
       table.insert(t1, s1)
@@ -20,7 +22,7 @@ function SplitString:split(strInput, delimiter)
     endIndex = endIndex + 1
   end
 
-  if startIndex ~= 1 then
+  if startIndex ~= 1 and startIndex <= strCount and endIndex <= strCount then
     table.insert(t1, string.sub(strInput, startIndex, endIndex))
   elseif endIndex == 0 then
     table.insert(t1, "")
@@ -56,7 +58,9 @@ function SplitString:splitIgnoreEmpty(strInput, delimiter)
   local t1 = {}
   local startIndex = 1
   local endIndex = 0
+  local strCount = 0
   for char1 in strInput:gmatch(".") do
+    strCount = strCount + 1
     if char1 == delimiter then
       local s1 = string.sub(strInput, startIndex, endIndex)
       if s1 ~= "" then table.insert(t1, s1) end
@@ -65,7 +69,7 @@ function SplitString:splitIgnoreEmpty(strInput, delimiter)
     endIndex = endIndex + 1
   end
 
-  if startIndex ~= 1 then
+  if startIndex ~= 1 and startIndex <= strCount and endIndex <= strCount then
     table.insert(t1, string.sub(strInput, startIndex, endIndex))
   elseif endIndex == 0 then
     table.insert(t1, "")

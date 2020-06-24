@@ -34,6 +34,12 @@ describe("Split String | ", function()
       local t1 = SplitString:split(a, "|")
       assert.is_same({"HELLO", "HARMFUL", "FILTER"}, t1)
     end)
+
+    test("Last character is delimiter", function()
+      local a = "134110255152035304043431340055"
+      local t1 = SplitString:split(a, "5")
+      assert.is_same({"1341102", "", "1", "203", "3040434313400", ""}, t1)
+    end)
   end)
 
   describe("Split ignore empty", function()
@@ -67,6 +73,12 @@ describe("Split String | ", function()
       local a = "HELLO|HARMFUL|FILTER"
       local t1 = SplitString:splitIgnoreEmpty(a, "|")
       assert.is_same({"HELLO", "HARMFUL", "FILTER"}, t1)
+    end)
+
+    test("Last character is delimiter", function()
+      local a = "134110255152035304043431340055"
+      local t1 = SplitString:splitIgnoreEmpty(a, "5")
+      assert.is_same({"1341102", "1", "203", "3040434313400"}, t1)
     end)
   end)
 end)
