@@ -1,0 +1,18 @@
+pipeline {
+  agent {
+    docker {
+      image "baselua:1.0"
+      args "--user jenkins-docker \
+        --env TZ='America/Los_Angeles' \
+      "
+    }
+  }
+
+  stages {
+    stage("Tests") {
+      steps {
+        sh "./scripts/tests.sh"
+      }
+    }
+  }
+}
