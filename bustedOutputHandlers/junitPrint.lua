@@ -83,11 +83,6 @@ return function(options)
     table.insert(stack, top)
     top = suite_xml
 
-    -- local t1 = {}
-    -- for k, v in pairs(suite) do table.insert(t1, k) end
-    -- table.sort(t1)
-    -- for _, key in ipairs(t1) do print(key .. " | " .. tostring(suite[key])) end
-
     local runString = (total > 1 and '\nRepeating all tests (run %u of %u) . . .\n' or '')
     print(runString:format(count, total))
 
