@@ -24,7 +24,7 @@ pipeline {
   post {
     always {
       dir(env.subdir) {
-        junit 'bustedOutputHandlers/reports/**/*.xml'
+        junit 'bustedOutputHandlers/reports/*.xml'
       }
     }
   }
