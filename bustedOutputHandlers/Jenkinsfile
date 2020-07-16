@@ -8,10 +8,16 @@ pipeline {
     }
   }
 
+  environment {
+    subdir = "bustedOutputHandlers"
+  }
+
   stages {
     stage("Tests") {
       steps {
-        sh "./scripts/tests.sh"
+        dir(env.subdir) {
+          sh "./scripts/tests.sh"
+        }
       }
     }
   }
