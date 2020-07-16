@@ -9,15 +9,22 @@ pipeline {
   }
 
   environment {
-    subdir = "bustedOutputHandlers"
+    subdir = "."
   }
 
   stages {
     stage("Tests") {
       steps {
         dir(env.subdir) {
-          sh "./scripts/tests.sh"
+          sh "./bustedOutputHandlers/scripts/tests.sh"
         }
+      }
+    }
+  }
+  post {
+    always {
+      dir(env.subdir) {
+        junit 'bustedOutputHandlers/reports/**/*.xml'
       }
     }
   }

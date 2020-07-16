@@ -92,7 +92,7 @@ return function(options)
     print(runString:format(count, total))
 
     print("File(s) being ran: ")
-    for index, val in ipairs(suite.file) do print(string.format("  %u. %s", index, val.name)) end
+    for index, val in ipairs(suite.file) do print(string.format("  [%u] %s", index, val.name)) end
 
     return nil, true
   end
