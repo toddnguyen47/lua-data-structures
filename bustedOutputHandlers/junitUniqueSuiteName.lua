@@ -24,6 +24,7 @@ return function(options)
 
   local _filename_ = ""
   local _filename_noextension_ = ""
+  local _error_stack_ = {}
 
   -- Ref: https://github.com/Olivine-Labs/busted/blob/master/busted/outputHandlers/plainTerminal.lua#L69
   local statusString = function()
@@ -111,6 +112,15 @@ return function(options)
       for index, attributes in ipairs(suite.file) do
         print(string.format("  [%u] %s", index, replaceForwardSlash(attributes.name)))
       end
+    end
+
+    -- Add error tag
+    if next(_error_stack_) ~= nil then
+      for _, error_tag in ipairs(_error_stack_) do
+        top.xml_doc:add_direct_child(error_tag)
+        top.xml_doc:up()
+      end
+      _error_stack_ = {}
     end
 
     return nil, true
@@ -213,11 +223,18 @@ return function(options)
       _filename_ = message:match(".*%.lua")
       _filename_noextension_ = _filename_:gsub("%.lua", "")
 
-      top.xml_doc.attr.errors = top.xml_doc.attr.errors + 1
-      top.xml_doc:addtag('error')
-      top.xml_doc:text(message)
-      if trace and trace.traceback then top.xml_doc:text(trace.traceback) end
-      top.xml_doc:up()
+      if string.lower(top.xml_doc.tag) == "testsuites" then
+        local error_tag = xml.new('error')
+        error_tag:text(message)
+        if trace and trace.traceback then error_tag:text(trace.traceback) end
+        table.insert(_error_stack_, error_tag)
+      elseif string.lower(top.xml_doc.tag) == "testsuite" then
+        top.xml_doc.attr.errors = top.xml_doc.attr.errors + 1
+        top.xml_doc:addtag('error')
+        top.xml_doc:text(message)
+        if trace and trace.traceback then top.xml_doc:text(trace.traceback) end
+        top.xml_doc:up()
+      end
     end
 
     return nil, true
