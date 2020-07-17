@@ -222,14 +222,14 @@ return function(options)
     if element.descriptor ~= 'it' then
       _filename_ = message:match(".*%.lua")
       _filename_noextension_ = _filename_:gsub("%.lua", "")
+      top.xml_doc.attr.errors = top.xml_doc.attr.errors + 1
 
       if string.lower(top.xml_doc.tag) == "testsuites" then
         local error_tag = xml.new('error')
         error_tag:text(message)
         if trace and trace.traceback then error_tag:text(trace.traceback) end
         table.insert(_error_stack_, error_tag)
-      elseif string.lower(top.xml_doc.tag) == "testsuite" then
-        top.xml_doc.attr.errors = top.xml_doc.attr.errors + 1
+      else
         top.xml_doc:addtag('error')
         top.xml_doc:text(message)
         if trace and trace.traceback then top.xml_doc:text(trace.traceback) end
