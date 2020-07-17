@@ -78,6 +78,7 @@ return function(options)
     filename = suite.file[1].name
     filename_noextension = filename:gsub("%.lua", "")
 
+    -- For Jenkins Junit plugin to work, we need to make sure the testsuite name is unique
     local suite_xml = {
       start_tick = suite.starttick,
       xml_doc = xml.new('testsuite', {
@@ -150,6 +151,7 @@ return function(options)
   end
 
   handler.testStart = function(element, parent)
+    -- To be safe, we will use `test.filename_noextension` as a pseudo 'package' name
     testcase_node = xml.new('testcase', {
       classname = "test." .. filename_noextension,
       name = handler.getFullName(element),

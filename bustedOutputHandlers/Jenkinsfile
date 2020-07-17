@@ -24,7 +24,7 @@ pipeline {
   post {
     always {
       dir(env.subdir) {
-        archiveArtifacts artifacts: 'bustedOutputHandlers/reports/*.xml'
+        // archiveArtifacts artifacts: 'bustedOutputHandlers/reports/*.xml'
         junit 'bustedOutputHandlers/reports/*.xml'
       }
     }
