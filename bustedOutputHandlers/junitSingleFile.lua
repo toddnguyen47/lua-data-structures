@@ -22,6 +22,9 @@ return function(options)
     output_file_name = options.arguments[1]
   end
 
+  local filename = ""
+  local filename_noextension = ""
+
   -- Ref: https://github.com/Olivine-Labs/busted/blob/master/busted/outputHandlers/plainTerminal.lua#L69
   local statusString = function()
     local successString = say('output.success_plural')
@@ -68,10 +71,17 @@ return function(options)
   end
 
   handler.suiteStart = function(suite, count, total)
+    if (#suite.file > 1) then
+      print("ERROR: Only use this output mode while running busted on a single file")
+      os.exit(1)
+    end
+    filename = suite.file[1].name
+    filename_noextension = filename:gsub("%.lua", "")
+
     local suite_xml = {
       start_tick = suite.starttick,
       xml_doc = xml.new('testsuite', {
-        name = 'Run ' .. count .. ' of ' .. total,
+        name = 'Run ' .. count .. ' of ' .. total .. "." .. filename_noextension,
         tests = 0,
         errors = 0,
         failures = 0,
@@ -85,9 +95,7 @@ return function(options)
 
     local runString = (total > 1 and '\nRepeating all tests (run %u of %u) . . .\n' or '')
     print(runString:format(count, total))
-
-    print("File(s) being ran: ")
-    for index, val in ipairs(suite.file) do print(string.format("  [%u] %s", index, val.name)) end
+    print("File being ran: " .. tostring(filename))
 
     return nil, true
   end
@@ -143,8 +151,9 @@ return function(options)
 
   handler.testStart = function(element, parent)
     testcase_node = xml.new('testcase', {
-      classname = element.trace.short_src .. ':' .. element.trace.currentline,
-      name = handler.getFullName(element)
+      classname = "test." .. filename_noextension,
+      name = handler.getFullName(element),
+      currentline = element.trace.currentline
     })
     top.xml_doc:add_direct_child(testcase_node)
 

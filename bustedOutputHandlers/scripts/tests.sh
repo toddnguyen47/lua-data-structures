@@ -19,7 +19,7 @@ run_busted() {
 
   filename_no_extension="${filename/.lua/}"
 
-  busted -v --output="${cur_dir}/bustedOutputHandlers/junitPrint.lua" \
+  busted -v --output="${cur_dir}/bustedOutputHandlers/junitSingleFile.lua" \
     -Xoutput "${report_folder}/${filename_no_extension}.xml" -- "${filename}"
 }
 
