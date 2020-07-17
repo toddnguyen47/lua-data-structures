@@ -70,12 +70,19 @@ return function(options)
         formattedTime .. ' ' .. say('output.seconds')
   end
 
+  ---@param strInput string
+  ---@return string
+  local replaceForwardSlash = function(strInput)
+    return strInput:gsub("%./", ""):gsub("/", ".")
+  end
+
   handler.suiteStart = function(suite, count, total)
     if (#suite.file > 1) then
-      print("ERROR: Only use this output mode while running busted on a single file")
-      os.exit(1)
+      print(
+        "WARNING: Since there are more than 1 file being ran, the suite name and the testcase " ..
+          "classname will only use the name of the first file.")
     end
-    filename = suite.file[1].name
+    filename = replaceForwardSlash(suite.file[1].name)
     filename_noextension = filename:gsub("%.lua", "")
 
     -- For Jenkins Junit plugin to work, we need to make sure the testsuite name is unique
@@ -96,7 +103,11 @@ return function(options)
 
     local runString = (total > 1 and '\nRepeating all tests (run %u of %u) . . .\n' or '')
     print(runString:format(count, total))
-    print("File being ran: " .. tostring(filename))
+
+    print("File(s) being ran:")
+    for index, attributes in ipairs(suite.file) do
+      print(string.format("  [%u] %s", index, replaceForwardSlash(attributes.name)))
+    end
 
     return nil, true
   end
@@ -119,6 +130,9 @@ return function(options)
     top.xml_doc.attr.failures = top.xml_doc.attr.failures + suite_xml.xml_doc.attr.failures
     top.xml_doc.attr.skip = top.xml_doc.attr.skip + suite_xml.xml_doc.attr.skip
 
+    if (top.xml_doc.attr.errors > 0) or (top.xml_doc.attr.failures) > 0 then
+      print("ERROR / FAILURE FOUND!")
+    end
     print(statusString())
     return nil, true
   end
