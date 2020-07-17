@@ -22,8 +22,8 @@ return function(options)
     output_file_name = options.arguments[1]
   end
 
-  local filename = ""
-  local filename_noextension = ""
+  local _filename_ = ""
+  local _filename_noextension_ = ""
 
   -- Ref: https://github.com/Olivine-Labs/busted/blob/master/busted/outputHandlers/plainTerminal.lua#L69
   local statusString = function()
@@ -77,19 +77,21 @@ return function(options)
   end
 
   handler.suiteStart = function(suite, count, total)
-    if (#suite.file > 1) then
-      print(
-        "WARNING: Since there are more than 1 file being ran, the suite name and the testcase " ..
-          "classname will only use the name of the first file.")
+    if suite.file then
+      if (#suite.file > 1) then
+        print(
+          "WARNING: Since there are more than 1 file being ran, the suite name and the testcase " ..
+            "classname will only use the name of the first file.")
+      end
+      _filename_ = replaceForwardSlash(suite.file[1].name)
+      _filename_noextension_ = _filename_:gsub("%.lua", "")
     end
-    filename = replaceForwardSlash(suite.file[1].name)
-    filename_noextension = filename:gsub("%.lua", "")
 
     -- For Jenkins Junit plugin to work, we need to make sure the testsuite name is unique
     local suite_xml = {
       start_tick = suite.starttick,
       xml_doc = xml.new('testsuite', {
-        name = 'Run ' .. count .. ' of ' .. total .. "." .. filename_noextension,
+        name = 'Run ' .. count .. ' of ' .. total .. "." .. _filename_noextension_,
         tests = 0,
         errors = 0,
         failures = 0,
@@ -104,9 +106,11 @@ return function(options)
     local runString = (total > 1 and '\nRepeating all tests (run %u of %u) . . .\n' or '')
     print(runString:format(count, total))
 
-    print("File(s) being ran:")
-    for index, attributes in ipairs(suite.file) do
-      print(string.format("  [%u] %s", index, replaceForwardSlash(attributes.name)))
+    if (suite.file) then
+      print("File(s) being ran:")
+      for index, attributes in ipairs(suite.file) do
+        print(string.format("  [%u] %s", index, replaceForwardSlash(attributes.name)))
+      end
     end
 
     return nil, true
@@ -167,7 +171,7 @@ return function(options)
   handler.testStart = function(element, parent)
     -- To be safe, we will use `test.filename_noextension` as a pseudo 'package' name
     testcase_node = xml.new('testcase', {
-      classname = "test." .. filename_noextension,
+      classname = "test." .. _filename_noextension_,
       name = handler.getFullName(element),
       currentline = element.trace.currentline
     })
@@ -206,6 +210,9 @@ return function(options)
 
   handler.error = function(element, parent, message, trace)
     if element.descriptor ~= 'it' then
+      _filename_ = message:match(".*%.lua")
+      _filename_noextension_ = _filename_:gsub("%.lua", "")
+
       top.xml_doc.attr.errors = top.xml_doc.attr.errors + 1
       top.xml_doc:addtag('error')
       top.xml_doc:text(message)
